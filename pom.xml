@@ -28,6 +28,7 @@
     <modules>
 	    <module>../lealone/lealone-common</module>
         <module>../lealone/lealone-net</module>
+        <module>../lealone/lealone-netty</module>
         <module>../lealone/lealone-client</module>
         <module>../lealone/lealone-server</module>
         <module>../lealone/lealone-sql</module>
@@ -40,6 +41,7 @@
         <module>lealone-orm</module>
         <module>lealone-vertx</module>
         <module>lealone-js</module>
+        <module>lealone-platform-test</module>
     </modules>
 
     <build>

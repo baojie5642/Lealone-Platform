@@ -32,24 +32,18 @@
     <dependencies>
         <dependency>
             <groupId>org.lealone</groupId>
-            <artifactId>lealone-orm</artifactId>
-            <version>${project.version}</version>
-        </dependency><!--
-        <dependency>
-            <groupId>org.lealone</groupId>
-            <artifactId>lealone-db</artifactId>
-            <version>${project.version}</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.lealone</groupId>
-            <artifactId>lealone-client</artifactId>
+            <artifactId>lealone-net</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lealone</groupId>
-            <artifactId>lealone-test</artifactId>
+            <artifactId>lealone-db</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.lealone</groupId>
+            <artifactId>lealone-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
