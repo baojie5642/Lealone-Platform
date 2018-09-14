@@ -119,16 +119,16 @@ public class VertxNetServer extends NetServerBase {
                 logger.info("MessagingService listening on port " + server.actualPort());
             } else {
                 Throwable e = res.cause();
-                String address = port + ":" + port;
+                String address = host + ":" + port;
                 if (e instanceof BindException) {
                     if (e.getMessage().contains("in use"))
-                        throw new ConfigException(address + " is in use by another process.  "
-                                + "Change listen_address:storage_port in lealone.yaml "
-                                + "to values that do not conflict with other services");
+                        throw new ConfigException(
+                                address + " is in use by another process. Change host:port in lealone.yaml "
+                                        + "to values that do not conflict with other services");
                     else if (e.getMessage().contains("Cannot assign requested address"))
                         throw new ConfigException("Unable to bind to address " + address
-                                + ". Set listen_address in lealone.yaml to an interface you can bind to, e.g.,"
-                                + " your private IP address on EC2");
+                                + ". Set host:port in lealone.yaml to an interface you can bind to, e.g.,"
+                                + " your private IP address");
                 }
                 throw DbException.convert(e);
             }
