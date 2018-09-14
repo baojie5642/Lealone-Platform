@@ -21,12 +21,12 @@ import java.net.BindException;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import org.lealone.api.ErrorCode;
 import org.lealone.common.exceptions.ConfigException;
 import org.lealone.common.exceptions.DbException;
 import org.lealone.common.logging.Logger;
 import org.lealone.common.logging.LoggerFactory;
 import org.lealone.common.security.EncryptionOptions.ServerEncryptionOptions;
+import org.lealone.db.api.ErrorCode;
 import org.lealone.net.AsyncConnection;
 import org.lealone.net.NetServerBase;
 
