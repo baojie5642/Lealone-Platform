@@ -26,6 +26,7 @@ import org.lealone.common.exceptions.DbException;
 import org.lealone.net.AsyncConnection;
 import org.lealone.net.AsyncConnectionManager;
 import org.lealone.net.NetEndpoint;
+import org.lealone.net.TcpConnection;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.net.NetClient;
@@ -86,17 +87,17 @@ public class VertxNetClient implements org.lealone.net.NetClient {
                             if (res.succeeded()) {
                                 NetSocket socket = res.result();
                                 VertxWritableChannel channel = new VertxWritableChannel(socket);
-                                AsyncConnection connection;
+                                AsyncConnection conn;
                                 if (connectionManager != null) {
-                                    connection = connectionManager.createConnection(channel, false);
+                                    conn = connectionManager.createConnection(channel, false);
                                 } else {
-                                    connection = new AsyncConnection(channel, false, this);
+                                    conn = new TcpConnection(channel, this);
                                 }
-                                connection.setHostAndPort(endpoint.getHostAndPort());
-                                connection.setInetSocketAddress(inetSocketAddress);
-                                asyncConnections.put(inetSocketAddress, connection);
+                                conn.setHostAndPort(endpoint.getHostAndPort());
+                                conn.setInetSocketAddress(inetSocketAddress);
+                                asyncConnections.put(inetSocketAddress, conn);
                                 socket.handler(buffer -> {
-                                    connection.handle(new VertxBuffer(buffer));
+                                    conn.handle(new VertxBuffer(buffer));
                                 });
                             } else {
                                 throw DbException.convert(res.cause());
