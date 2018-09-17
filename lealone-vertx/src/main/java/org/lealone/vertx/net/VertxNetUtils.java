@@ -17,10 +17,7 @@
  */
 package org.lealone.vertx.net;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 import org.lealone.common.security.EncryptionOptions;
 import org.lealone.common.security.EncryptionOptions.ClientEncryptionOptions;
@@ -48,17 +45,6 @@ public class VertxNetUtils {
                 vertx = null;
             }
         }
-    }
-
-    public static Vertx getVertx(Properties prop) {
-        if (vertx != null) {
-            return vertx;
-        }
-        Map<String, String> config = new HashMap<>();
-        for (Entry<Object, Object> e : prop.entrySet()) {
-            config.put(e.getKey().toString(), e.getValue().toString());
-        }
-        return getVertx(config);
     }
 
     public static Vertx getVertx(Map<String, String> config) {
@@ -127,17 +113,17 @@ public class VertxNetUtils {
 
     private static final String PREFIX = "lealone.security.";
 
-    public static NetClientOptions getNetClientOptions(Properties prop) {
-        if (prop == null || !prop.containsKey(PREFIX + "keystore")) {
+    public static NetClientOptions getNetClientOptions(Map<String, String> config) {
+        if (config == null || !config.containsKey(PREFIX + "keystore")) {
             return new NetClientOptions();
         }
 
         ClientEncryptionOptions eo = new ClientEncryptionOptions();
-        eo.keystore = prop.getProperty(PREFIX + "keystore");
-        eo.keystore_password = prop.getProperty(PREFIX + "keystore.password");
-        eo.truststore = prop.getProperty(PREFIX + "truststore");
-        eo.truststore_password = prop.getProperty(PREFIX + "truststore.password");
-        String cipher_suites = prop.getProperty(PREFIX + "cipher.suites");
+        eo.keystore = config.get(PREFIX + "keystore");
+        eo.keystore_password = config.get(PREFIX + "keystore.password");
+        eo.truststore = config.get(PREFIX + "truststore");
+        eo.truststore_password = config.get(PREFIX + "truststore.password");
+        String cipher_suites = config.get(PREFIX + "cipher.suites");
         if (cipher_suites != null)
             eo.cipher_suites = cipher_suites.split(",");
 

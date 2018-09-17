@@ -18,7 +18,7 @@
 package org.lealone.vertx.net;
 
 import java.net.InetSocketAddress;
-import java.util.Properties;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -42,11 +42,11 @@ public class VertxNetClient implements org.lealone.net.NetClient {
     private static Vertx vertx;
     private static NetClient client;
 
-    private static void openClient(Properties prop) {
+    private static void openClient(Map<String, String> config) {
         synchronized (VertxNetClient.class) {
             if (client == null) {
-                vertx = VertxNetUtils.getVertx(prop);
-                NetClientOptions options = VertxNetUtils.getNetClientOptions(prop);
+                vertx = VertxNetUtils.getVertx(config);
+                NetClientOptions options = VertxNetUtils.getNetClientOptions(config);
                 options.setConnectTimeout(10000);
                 client = vertx.createNetClient(options);
             }
@@ -65,15 +65,15 @@ public class VertxNetClient implements org.lealone.net.NetClient {
     }
 
     @Override
-    public AsyncConnection createConnection(Properties prop, NetEndpoint endpoint) {
-        return createConnection(prop, endpoint, null);
+    public AsyncConnection createConnection(Map<String, String> config, NetEndpoint endpoint) {
+        return createConnection(config, endpoint, null);
     }
 
     @Override
-    public AsyncConnection createConnection(Properties prop, NetEndpoint endpoint,
+    public AsyncConnection createConnection(Map<String, String> config, NetEndpoint endpoint,
             AsyncConnectionManager connectionManager) {
         if (client == null) {
-            openClient(prop);
+            openClient(config);
         }
         InetSocketAddress inetSocketAddress = endpoint.getInetSocketAddress();
         AsyncConnection asyncConnection = asyncConnections.get(inetSocketAddress);
@@ -93,7 +93,6 @@ public class VertxNetClient implements org.lealone.net.NetClient {
                                 } else {
                                     conn = new TcpConnection(channel, this);
                                 }
-                                conn.setHostAndPort(endpoint.getHostAndPort());
                                 conn.setInetSocketAddress(inetSocketAddress);
                                 asyncConnections.put(inetSocketAddress, conn);
                                 socket.handler(buffer -> {
